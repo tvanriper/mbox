@@ -99,19 +99,19 @@ func TestWriteMBOXO(t *testing.T) {
 	var err error
 	result := bytes.NewBuffer([]byte{})
 	mbox := NewWriter(result)
-	err = mbox.WriteMail(from1, []byte(email1))
+	err = mbox.WriteMail(from1, bytes.NewBuffer([]byte(email1)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from2, []byte(email2))
+	err = mbox.WriteMail(from2, bytes.NewBuffer([]byte(email2)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from3, []byte(email3))
+	err = mbox.WriteMail(from3, bytes.NewBuffer([]byte(email3)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from4, []byte(email4))
+	err = mbox.WriteMail(from4, bytes.NewBuffer([]byte(email4)))
 	if err != nil {
 		t.Error(err)
 	}
@@ -158,19 +158,19 @@ func TestWriteMBOXRD(t *testing.T) {
 	result := bytes.NewBuffer([]byte{})
 	mbox := NewWriter(result)
 	mbox.Type = MBOXRD
-	err = mbox.WriteMail(from1, []byte(email1))
+	err = mbox.WriteMail(from1, bytes.NewBuffer([]byte(email1)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from2, []byte(email2))
+	err = mbox.WriteMail(from2, bytes.NewBuffer([]byte(email2)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from3, []byte(email3))
+	err = mbox.WriteMail(from3, bytes.NewBuffer([]byte(email3)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from4, []byte(email4))
+	err = mbox.WriteMail(from4, bytes.NewBuffer([]byte(email4)))
 	if err != nil {
 		t.Error(err)
 	}
@@ -217,19 +217,19 @@ func TestWriteMBOXCL(t *testing.T) {
 	result := bytes.NewBuffer([]byte{})
 	mbox := NewWriter(result)
 	mbox.Type = MBOXCL
-	err = mbox.WriteMail(from1, []byte(email1))
+	err = mbox.WriteMail(from1, bytes.NewBuffer([]byte(email1)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from2, []byte(email2))
+	err = mbox.WriteMail(from2, bytes.NewBuffer([]byte(email2)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from3, []byte(email3))
+	err = mbox.WriteMail(from3, bytes.NewBuffer([]byte(email3)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from4, []byte(email4))
+	err = mbox.WriteMail(from4, bytes.NewBuffer([]byte(email4)))
 	if err != nil {
 		t.Error(err)
 	}
@@ -277,19 +277,19 @@ func TestWriteMBOXCL2(t *testing.T) {
 	result := bytes.NewBuffer([]byte{})
 	mbox := NewWriter(result)
 	mbox.Type = MBOXCL2
-	err = mbox.WriteMail(from1, []byte(email1))
+	err = mbox.WriteMail(from1, bytes.NewBuffer([]byte(email1)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from2, []byte(email2))
+	err = mbox.WriteMail(from2, bytes.NewBuffer([]byte(email2)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from3, []byte(email3))
+	err = mbox.WriteMail(from3, bytes.NewBuffer([]byte(email3)))
 	if err != nil {
 		t.Error(err)
 	}
-	err = mbox.WriteMail(from4, []byte(email4))
+	err = mbox.WriteMail(from4, bytes.NewBuffer([]byte(email4)))
 	if err != nil {
 		t.Error(err)
 	}
@@ -337,12 +337,12 @@ func TestBrokenWriteFS(t *testing.T) {
 	mbox := NewWriter(result)
 	mbox.FS = &BrokenFS{BreakWriter: true}
 	mbox.Type = MBOXCL2
-	err := mbox.WriteMail(from1, []byte(email1))
+	err := mbox.WriteMail(from1, bytes.NewBuffer([]byte(email1)))
 	if err == nil {
 		t.Errorf("expected error, but it succeeded.")
 	}
 	mbox.Type = MBOXCL
-	err = mbox.WriteMail(from1, []byte(email1))
+	err = mbox.WriteMail(from1, bytes.NewBuffer([]byte(email1)))
 	if err == nil {
 		t.Errorf("expected error, but it succeeded.")
 	}
@@ -352,13 +352,13 @@ func TestBrokenReadFS(t *testing.T) {
 	mbox := NewWriter(result)
 	mbox.FS = &BrokenFS{BreakReader: true}
 	mbox.Type = MBOXCL2
-	err := mbox.WriteMail(from1, []byte(email1))
+	err := mbox.WriteMail(from1, bytes.NewBuffer([]byte(email1)))
 	if err == nil {
 		t.Errorf("expected error, but it succeeded.")
 	}
 	mbox.FS = &BrokenFS{BreakReader: true}
 	mbox.Type = MBOXCL
-	err = mbox.WriteMail(from1, []byte(email1))
+	err = mbox.WriteMail(from1, bytes.NewBuffer([]byte(email1)))
 	if err == nil {
 		t.Errorf("expected error, but it succeeded.")
 	}

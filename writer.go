@@ -59,7 +59,8 @@ func NewFileFromFS(base string) *FileFromFS {
 // The 'from' argument may come from a call to MboxReader.NextMessage(), or
 // a tool delivering the mail to the box.  The 'mail' argument contains the
 // bytes composing the mail (headers and body).
-func (m *MboxWriter) WriteMail(from string, mail []byte) (err error) {
+func (m *MboxWriter) WriteMail(from string, mail io.Reader) (err error) {
+	from = strings.TrimPrefix(from, "From ")
 	switch m.Type {
 	case MBOXCL2:
 		err = m.writeMBOXCL2Mail(from, mail)
@@ -74,8 +75,8 @@ func (m *MboxWriter) WriteMail(from string, mail []byte) (err error) {
 }
 
 // writeMBOXOMail writes the email using mboxo formatting.
-func (m *MboxWriter) writeMBOXOMail(from string, mail []byte) (err error) {
-	reader := bufio.NewReader(bytes.NewBuffer(mail))
+func (m *MboxWriter) writeMBOXOMail(from string, mail io.Reader) (err error) {
+	reader := bufio.NewReader(mail)
 	m.write.Write([]byte(fmt.Sprintf("From %s\n", from)))
 	b, err := reader.ReadBytes('\n')
 	for err == nil {
@@ -98,13 +99,13 @@ func (m *MboxWriter) writeMBOXOMail(from string, mail []byte) (err error) {
 	return err
 }
 
-func (m *MboxWriter) writeMBOXRDMail(from string, mail []byte) (err error) {
+func (m *MboxWriter) writeMBOXRDMail(from string, mail io.Reader) (err error) {
 	re, err := regexp.Compile("^>*From ")
 	if err != nil {
 		// This should only happen if I didn't unit test and got the regexp wrong.
 		panic(err)
 	}
-	reader := bufio.NewReader(bytes.NewBuffer(mail))
+	reader := bufio.NewReader(mail)
 	m.write.Write([]byte(fmt.Sprintf("From %s\n", from)))
 	b, err := reader.ReadBytes('\n')
 	for err == nil {
@@ -126,7 +127,7 @@ func (m *MboxWriter) writeMBOXRDMail(from string, mail []byte) (err error) {
 	return err
 }
 
-func (m *MboxWriter) writeMBOXCLMail(from string, mail []byte) (err error) {
+func (m *MboxWriter) writeMBOXCLMail(from string, mail io.Reader) (err error) {
 	// We need to know, in advance, the size of the message to write, after we've
 	// modified it to handle 'From '.  The safest way to do this requires writing
 	// to a file first to get the resulting size, then authoring the Content-Length
@@ -152,7 +153,7 @@ func (m *MboxWriter) writeMBOXCLMail(from string, mail []byte) (err error) {
 		panic(err)
 	}
 	inHeader := true
-	reader := bufio.NewReader(bytes.NewBuffer(mail))
+	reader := bufio.NewReader(mail)
 	m.write.Write([]byte(fmt.Sprintf("From %s\n", from)))
 	b, err := reader.ReadBytes('\n')
 	count := int64(0)
@@ -202,7 +203,7 @@ func (m *MboxWriter) writeMBOXCLMail(from string, mail []byte) (err error) {
 	return err
 }
 
-func (m *MboxWriter) writeMBOXCL2Mail(from string, mail []byte) (err error) {
+func (m *MboxWriter) writeMBOXCL2Mail(from string, mail io.Reader) (err error) {
 	// We need to know, in advance, the size of the message to write, after we've
 	// modified it to handle 'From '.  The safest way to do this requires writing
 	// to a file first to get the resulting size, then authoring the Content-Length
@@ -223,7 +224,7 @@ func (m *MboxWriter) writeMBOXCL2Mail(from string, mail []byte) (err error) {
 	}()
 
 	inHeader := true
-	reader := bufio.NewReader(bytes.NewBuffer(mail))
+	reader := bufio.NewReader(mail)
 	m.write.Write([]byte(fmt.Sprintf("From %s\n", from)))
 	b, err := reader.ReadBytes('\n')
 	count := int64(0)
