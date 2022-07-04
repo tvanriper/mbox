@@ -44,4 +44,3 @@ golang's internal API, or write their own code, for proper file locking.
 ```bash
 go get github.com/tvanriper/mbox
 ```
-
