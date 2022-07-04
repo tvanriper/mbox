@@ -7,6 +7,7 @@ import (
 )
 
 // TimeFormat describes the way mbox files format the 'From ' date/time field.
+// One may use this with time.Format and time.Parse functions.
 var TimeFormat string = "Mon Jan 02 15:04:05 2006"
 
 // ParseFrom parses a from string to its component parts.
