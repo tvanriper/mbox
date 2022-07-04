@@ -1,6 +1,7 @@
 # mbox
 
 [![Go Reference](https://pkg.go.dev/badge/golang.org/x/example.svg)](https://pkg.go.dev/github.com/tvanriper/mbox)
+[![Coverage Status](https://coveralls.io/repos/github/tvanriper/mbox/badge.svg?branch=main)](https://coveralls.io/github/tvanriper/mbox?branch=main)
 
 Supporting four different mbox file formats in pure golang.
 
