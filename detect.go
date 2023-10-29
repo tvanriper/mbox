@@ -30,7 +30,8 @@ func lineFeedType(reader io.ReadSeeker) (bool, error) {
 
 // DetectType attempts to figure out the type of mbox the reader holds.  This
 // is a best-effort attempt to determine the type of mbox file format based on
-// what it sees within the text.
+// what it sees within the text.  When it returns, it attempts to move reader
+// to the beginning of the stream on exit.
 //
 // It tries to work out the type of file by:
 //   - Looking for 'Content-Length' in a message's header
@@ -52,6 +53,7 @@ func DetectType(reader io.ReadSeeker) (mboxType int, err error) {
 	if err != nil {
 		return -1, err
 	}
+	defer reader.Seek(0, io.SeekStart)
 	inHeader := false
 	scanner := bufio.NewScanner(reader)
 	var hasRd bool = false
