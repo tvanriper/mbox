@@ -7,6 +7,8 @@
 Supporting four different mbox file formats in pure golang.
 
 Package mbox implements a reader and writer for working with mbox files.
+It also provides a tool to potentially determine the type of mbox format,
+although it isn't possible to create tool that can definitively determine this.
 
 The package supports four types of mbox files:
 
@@ -29,7 +31,10 @@ Use `mboxcl2` to address the lines starting with 'From ' by doing what
 mboxcl does, except it doesn't add '>' characters at all.
 
 You may need to know which type to use when reading or writing an mbox, for
-best results.
+best results.  However, you can try using `DetectType()` to work out the type
+of mbox.  Thanks go to [BenjamenMeyer's Thunderbird Mailbox Deduper
+code](https://github.com/BenjamenMeyer/go-tb-dedup) for incentivizing me to
+create `DetectType()`, even if I took a different approach.
 
 NOTE: These routines do not concern themselves with file locking. You may want
 to consider that while working with mbox files on systems that might actively
