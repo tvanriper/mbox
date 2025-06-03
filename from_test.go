@@ -6,7 +6,7 @@ import (
 )
 
 func TestParseFrom(t *testing.T) {
-	from := "From pi@rpi.cu Mon Jul 04 19:23:45 2022 Gads, more crap from this guy?"
+	from := "From pi@rpi.cu Mon Jul  4 19:23:45 2022 Gads, more crap from this guy?"
 	addr, date, moreinfo, err := ParseFrom(from)
 	if err != nil {
 		t.Errorf("expected success but it failed: %s", err)
@@ -15,10 +15,7 @@ func TestParseFrom(t *testing.T) {
 	if addr != expectedAddr {
 		t.Errorf("expected %s but got %s", expectedAddr, addr)
 	}
-	expectedTime, err := time.Parse(TimeFormat, "Mon Jul 04 19:23:45 2022")
-	if err != nil {
-		t.Error(err)
-	}
+	expectedTime := time.Date(2022, time.July, 4, 19, 23, 45, 0, time.UTC)
 	if expectedTime != date {
 		t.Errorf("expected %s but got %s", expectedTime.String(), date.String())
 	}
@@ -28,15 +25,24 @@ func TestParseFrom(t *testing.T) {
 	}
 }
 
+func TestParseFromNoncompliant(t *testing.T) {
+	from := "From pi@rpi.cu Mon Jul 04 19:23:45 2022"
+	_, date, _, err := ParseFrom(from)
+	if err != nil {
+		t.Errorf("expected success but it failed: %s", err)
+	}
+	expectedTime := time.Date(2022, time.July, 4, 19, 23, 45, 0, time.UTC)
+	if expectedTime != date {
+		t.Errorf("expected %s but got %s", expectedTime.String(), date.String())
+	}
+}
+
 func TestBuildFrom(t *testing.T) {
 	addr := "pi@rpi.cu"
-	date, err := time.Parse(TimeFormat, "Fri Jul 04 19:23:45 2022")
-	if err != nil {
-		t.Error(err)
-	}
+	date := time.Date(2022, time.July, 4, 19, 23, 45, 0, time.UTC)
 	moreinfo := "Gads, more crap from this guy?"
 
-	expectedFrom := "From pi@rpi.cu Mon Jul 04 19:23:45 2022 Gads, more crap from this guy?"
+	expectedFrom := "From pi@rpi.cu Mon Jul  4 19:23:45 2022 Gads, more crap from this guy?"
 
 	from := BuildFrom(addr, date, moreinfo)
 	if from != expectedFrom {

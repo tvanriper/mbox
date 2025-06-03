@@ -8,29 +8,19 @@ import (
 
 // TimeFormat describes the way mbox files format the 'From ' date/time field.
 // One may use this with time.Format and time.Parse functions.
-var TimeFormat string = "Mon Jan 02 15:04:05 2006"
+var TimeFormat string = "Mon Jan  2 15:04:05 2006"
 
 // ParseFrom parses a from string to its component parts.
 // It helpfully translates the date/time to a time.Time.  A mailer might use
 // this information in some way, if needed.
 func ParseFrom(from string) (addr string, date time.Time, moreinfo string, err error) {
-	splitted := strings.Split(from, " ")
-	l := len(splitted)
-	if l > 1 {
-		addr = splitted[1]
+	data, _ := strings.CutPrefix(from, "From ")
+	addr, remainder, _ := strings.Cut(data, " ")
+	if len(remainder) >= len(TimeFormat) {
+		date, err = time.Parse(TimeFormat, strings.TrimSpace(remainder[:len(TimeFormat)]))
+		moreinfo = remainder[len(TimeFormat):]
 	}
-	if l > 6 {
-		strDate := ""
-		for i := 2; i <= 6; i++ {
-			strDate = fmt.Sprintf("%s %s", strDate, splitted[i])
-		}
-		date, err = time.Parse(TimeFormat, strings.TrimSpace(strDate))
-	}
-	if l > 7 {
-		for i := 7; i < l; i++ {
-			moreinfo = fmt.Sprintf("%s %s", moreinfo, splitted[i])
-		}
-	}
+
 	return addr, date, strings.TrimSpace(moreinfo), err
 }
 

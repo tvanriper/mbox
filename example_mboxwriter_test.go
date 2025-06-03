@@ -68,14 +68,14 @@ You won't believe these prices!
 
 	// Output:
 	// File contents:
-	// 01: From bubbles@bubbletown.com Mon Jul 04 14:03:04 2022
+	// 01: From bubbles@bubbletown.com Mon Jul  4 14:03:04 2022
 	// 02: From: bubbles@bubbletown.com
 	// 03: To: mrmxpdstk@lazytown.com
 	// 04: Subject: To interpretation
 	// 05:
 	// 06: >From all of us, to all of you, be happy!
 	// 07:
-	// 08: From mrspam@corporate.corp.com Mon Jul 04 13:12:34 2022
+	// 08: From mrspam@corporate.corp.com Mon Jul  4 13:12:34 2022
 	// 09: From: mrspam@corporate.corp.com
 	// 10: To: mrmxpdstk@lazytown.com
 	// 11: Subject: Bestest offer in the universe!!11!!
