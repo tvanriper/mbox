@@ -16,6 +16,7 @@ var TimeFormat string = "Mon Jan  2 15:04:05 2006"
 func ParseFrom(from string) (addr string, date time.Time, moreinfo string, err error) {
 	data, _ := strings.CutPrefix(from, "From ")
 	addr, remainder, _ := strings.Cut(data, " ")
+	remainder = strings.TrimSpace(remainder)
 	if len(remainder) >= len(TimeFormat) {
 		date, err = time.Parse(TimeFormat, strings.TrimSpace(remainder[:len(TimeFormat)]))
 		moreinfo = remainder[len(TimeFormat):]
