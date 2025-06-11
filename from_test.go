@@ -26,7 +26,7 @@ func TestParseFrom(t *testing.T) {
 }
 
 func TestParseFromNoncompliant(t *testing.T) {
-	from := "From pi@rpi.cu Mon Jul 04 19:23:45 2022"
+	from := "From pi@rpi.cu  Mon Jul 04 19:23:45 2022"
 	_, date, _, err := ParseFrom(from)
 	if err != nil {
 		t.Errorf("expected success but it failed: %s", err)
